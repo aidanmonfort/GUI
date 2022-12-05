@@ -47,6 +47,7 @@ public class HelloController{
     int saveCounter=0;
     boolean changedName = false;
     boolean savedCharacter = false;
+    Player player;
     private File characterFile;
 
     @FXML
@@ -70,14 +71,7 @@ public class HelloController{
             throw new RuntimeException(e);
         }
 
-
-        final Image image;
-        try{
-            image = new Image(new FileInputStream("src/main/resources/com/monfort/guy.png"));
-        }
-        catch (FileNotFoundException e){
-            throw new RuntimeException("Could not find file");
-        }
+        player = new Player("src/main/resources/com/monfort/guy.png",100,100);
 
         h = new AnimationTimer() {
             @Override
@@ -95,7 +89,8 @@ public class HelloController{
                     movement();
                     gc.setFill( Color.BISQUE );
                     gc.fillRect(0,0, gameCanvas.getWidth(),gameCanvas.getHeight());
-                    gc.drawImage(image, x,y);
+                    player.draw(gc);
+                    player.testCollision(gc);
                 }
             }
         };
@@ -140,34 +135,19 @@ public class HelloController{
 
     protected void movement(){
         if(HelloApplication.currentlyActiveKeys.contains(KeyCode.A.toString())){
-            moveLeft();
+            player.moveLeft();
         }
         if (HelloApplication.currentlyActiveKeys.contains(KeyCode.D.toString())) {
-            moveRight();
+            player.moveRight();
         }
         if (HelloApplication.currentlyActiveKeys.contains(KeyCode.S.toString())) {
-            moveDown();
+            player.moveDown();
         }
         if (HelloApplication.currentlyActiveKeys.contains(KeyCode.W.toString())) {
-            moveUp();
+            player.moveUp();
         }
     }
 
-    private void moveUp(){
-        y -= 1;
-    }
-
-    private void moveDown(){
-        y += 1;
-    }
-
-    private void moveRight(){
-        x += 1;
-    }
-
-    private void moveLeft(){
-        x -= 1;
-    }
 
     @FXML
     protected void editName(){
