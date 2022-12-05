@@ -11,8 +11,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Formatter;
+import java.util.Scanner;
 
 public class HelloController{
 
@@ -41,6 +47,7 @@ public class HelloController{
     int saveCounter=0;
     boolean changedName = false;
     boolean savedCharacter = false;
+    private File characterFile;
 
     @FXML
     public void initialize(){
@@ -52,6 +59,17 @@ public class HelloController{
         nameField.setEditable(false);
         nameField.setVisible(false);
         saveCharacterButton.setVisible(false);
+
+        try{
+            characterFile = new File("character.deg");
+            if(!characterFile.exists()){
+                characterFile.createNewFile();
+            }
+        }
+        catch (IOException e){
+            throw new RuntimeException(e);
+        }
+
 
         final Image image;
         try{
@@ -85,6 +103,41 @@ public class HelloController{
     }
 
     @FXML
+    protected void save() throws FileNotFoundException {
+        File file = HelloApplication.openSaveDialog();
+        if(file != null){
+            file = new File(file.getAbsolutePath() + ".deg");
+            Formatter output = new Formatter(file);
+            output.format("%s,%s,%s,%s,%s,%s,%s", nameField.getText(), strengthValueLabel.getText(), dexterityValueLabel.getText(),
+                    constitutionValueLabel.getText(), intelligenceValueLabel.getText(), wisdomValueLabel.getText(), charismaValueLabel.getText());
+            output.close();
+        }
+    }
+
+    @FXML
+    protected void open() throws FileNotFoundException {
+        File file = HelloApplication.getSave();
+        File f = new File(file.getAbsolutePath());
+        Scanner sc = new Scanner(f);
+        String line = sc.nextLine();
+        ArrayList<String> stuff = new ArrayList<>();
+        while(line.contains(",")){
+            stuff.add(line.substring(0, line.indexOf(",")).trim());
+            line = line.substring(line.indexOf(",") + 1);
+        }
+        savedCharacter = true;
+        nameField.setText(stuff.get(0));
+        savedName.setText(stuff.get(0));
+        nameLabel.setText(stuff.get(0));
+        strengthValueLabel.setText(stuff.get(1));
+        dexterityValueLabel.setText(stuff.get(2));
+        constitutionValueLabel.setText(stuff.get(3));
+        intelligenceValueLabel.setText(stuff.get(4));
+        wisdomValueLabel.setText(stuff.get(5));
+        charismaValueLabel.setText(stuff.get(6));
+        System.out.println(stuff);
+    }
+
     protected void movement(){
         if(HelloApplication.currentlyActiveKeys.contains(KeyCode.A.toString())){
             moveLeft();

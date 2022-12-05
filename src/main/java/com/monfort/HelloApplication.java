@@ -5,13 +5,15 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 
 public class HelloApplication extends Application {
-    Stage window;
+    private static Stage window;
     static Scene scene;
     static HashSet<String> currentlyActiveKeys;
 
@@ -42,6 +44,25 @@ public class HelloApplication extends Application {
 
             }
         });
+    }
+
+    public static File openSaveDialog(){
+        File recordDir = new File(System.getProperty("user.home"), "/DungeonJavaFX/records");
+        if(!recordDir.exists()){
+            recordDir.mkdirs();
+        }
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(recordDir);
+        fileChooser.setTitle("Save");
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All file", "*.*"));
+        File file = fileChooser.showSaveDialog(window);
+        return file;
+    }
+
+    public static File getSave(){
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(window);
+        return file;
     }
 
     public static void main(String[] args) {

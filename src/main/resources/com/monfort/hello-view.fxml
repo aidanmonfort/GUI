@@ -10,9 +10,8 @@
             <menus>
                 <Menu text="File">
                     <items>
-                        <MenuItem text="Open"/>
-                        <MenuItem text="Save"/>
-                        <MenuItem text="Save As"/>
+                        <MenuItem text="Open" onAction="#open"/>
+                        <MenuItem text="Save" onAction="#save"/>
                         <SeparatorMenuItem  />
                         <MenuItem text="Exit" />
                     </items>
@@ -38,7 +37,7 @@
     <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="800"
              tabClosingPolicy="UNAVAILABLE">
         <Tab text="Gameplay" fx:id="maintab">
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" onKeyPressed="#movement">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                 <Canvas fx:id="gameCanvas" height="462.0" layoutX="6.0" width="518.0" />
                 <Button layoutX="61.0" layoutY="497.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="113.0" text="Button" />
                 <TextArea layoutX="560.0" layoutY="31.0" prefHeight="200.0" prefWidth="200.0" />
